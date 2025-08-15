@@ -242,7 +242,6 @@ html {
 
 @media (max-width: 768px) {
 body {
-background-color: #000;
 background-image: url(images/mobile-bak2.jpg);
 background-attachment: scroll; 
 }

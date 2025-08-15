@@ -243,7 +243,7 @@ html {
 @media (max-width: 768px) {
 body {
 background-color: #000;
-        /* Tira o 'fixed' pra não pesar no celular */
+background-image: url(images/mobile-bak2.jpg);
 background-attachment: scroll; 
 }
 }

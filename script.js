@@ -2,7 +2,7 @@
            
             const lat = "-23.1791"; 
             const lon = "-45.8872";
-            const apiKey = "7a2791ab1c9e89014a098d47a489fb53"; 
+            const apiKey = "7a2791ab1c9e89014a098d47a489fb53"; // OU ESSA 49b232b0509cc66eded6ee0411f64892
             const url = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=pt_br`;
 
             console.log("Chamando a API no endereço:", url);

@@ -1,19 +1,19 @@
 (async () => {
 
 
-    // Coordenadas de SJC pra gente não errar
+    // Coordenadas de SJC (COMO EXEMPLO)
     const lat = "-23.1791"; 
     const lon = "-45.8872";
     
     
     const apiKey = "49b232b0509cc66eded6ee0411f64892"; 
+    // OU ESSA: 7a2791ab1c9e89014a098d47a489fb53
 
     // O endereço do alvo
     const url = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=pt_br`;
 
     console.log("Preparando o disparo para:", url);
 
-    // --- O DISPARO ---
     try {
         // 1. Vai buscar a encomenda
         const resposta = await fetch(url);

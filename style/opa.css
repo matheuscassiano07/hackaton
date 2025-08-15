@@ -232,18 +232,73 @@ html {
     background: linear-gradient(to bottom, #a78bfa, #60a5fa);
 }
 
+/* ======================================================= */
+        /* ESTILOS DO ALERTA ESTILIZADO (MODAL)                    */
+        /* ======================================================= */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
 
-/* ======================================================= */
-/* ESTILO SÓ PARA OS CELULARES (DISPOSITIVOS MÓVEIS)       */
-/* ======================================================= */
-/* ======================================================= */
-/* ESTILO SÓ PARA OS CELULARES (DISPOSITIVOS MÓVEIS)       */
-/* ======================================================= */
+        .modal-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
 
-@media (max-width: 768px) {
-body {
-background-image: url(images/mobile-bak2.jpg);
-background-attachment: scroll; 
-}
-}
+        .modal-content {
+            background-color: #f7f7f7; /* bg-gray-800 */
+            color: #000000; /* text-gray-300 */
+            padding: 2rem;
+            border-radius: 1rem;
+            border: 1px solid #4b5563; /* border-gray-600 */
+            text-align: center;
+            max-width: 90%;
+            width: 400px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        
+        .modal-overlay.visible .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-title {
+            font-size: 1.5rem; /* text-2xl */
+            font-weight: 900; /* font-black */
+            color: #f87171; /* text-red-400 */
+            margin-bottom: 1rem;
+        }
+
+        .modal-message {
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-close-btn {
+            background-color: #3b82f6; /* bg-blue-500 */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .modal-close-btn:hover {
+            background-color: #2563eb; /* bg-blue-600 */
+        }
+
+
 

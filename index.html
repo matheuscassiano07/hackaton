@@ -20,23 +20,39 @@
                 O alerta que chega antes da tempestade.
             </h1>
             <div class="w-full max-w-lg">
-                <input id="locationInput" type="text" class="w-full p-4 text-center text-lg bg-gray-800/60 backdrop-blur-sm border-2 border-gray-500 rounded-lg 
-                focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400 placeholder-gray-400" placeholder="DIGITE SEU CEP">
-                <input id="locationInput" type="text" class="w-full p-4 text-center text-lg bg-gray-800/60 backdrop-blur-sm border-2 border-gray-500 rounded-lg 
+               
+                <input id="cidadeInput" type="text" class="w-full p-4 mb-4 text-center text-lg bg-gray-800/60 backdrop-blur-sm border-2 border-gray-500 rounded-lg 
+                focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400 placeholder-gray-400" placeholder="DIGITE SUA CIDADE">
+                
+                <input id="phoneInput" type="text" class="w-full p-4 text-center text-lg bg-gray-800/60 backdrop-blur-sm border-2 border-gray-500 rounded-lg 
                 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400 placeholder-gray-400" placeholder="DIGITE SEU NÚMERO DE CELULAR">
                 
-                <button class="button">
+              
+                <button id="submitButton" class="button">
                     <span class="button_lg">
                         <span class="button_sl"></span>
                         <span class="button_text">Receber notificações ao vivo</span>
                     </span>
                 </button>
             </div>
+            
+                <div id="alertModal" class="modal-overlay">
+                    <div class="modal-content">
+                        <h2 class="modal-title"></h2>
+                        <p id="modalMessage" class="modal-message">
+                            Para receber os alertas, você precisa preencher todos os campos. Faltou colocar a visão aí!
+                        </p>
+                        <button id="closeModalBtn" class="modal-close-btn">Ok!</button>
+                    </div>
+                </div>
         </section>
+    </div>
+
+
 
         <main id="resilience-center" class="space-y-12">
             
-            <!-- Alerta Educativo -->
+          
             <section class="main-card">
                 <h2 class="section-title">🚨 Alertas</h2>
                 <div class="alert-box alert-yellow">
@@ -112,5 +128,4 @@
     </div>
 </body>
 </html>
-
 <script src="script.js"></script>

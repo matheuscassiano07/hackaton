@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Caça Fumaça</title>
+    <title>Caça Fumaça - Alerta Climático ODS 13</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,83 +20,38 @@
                 O alerta que chega antes da tempestade.
             </h1>
             <div class="w-full max-w-lg">
-               
-                <input id="cidadeInput" type="text" class="w-full p-4 mb-4 text-center text-lg bg-gray-800/60 backdrop-blur-sm border-2 border-gray-500 rounded-lg 
-                focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400 placeholder-gray-400" placeholder="DIGITE SUA CIDADE">
-                
-                <input id="phoneInput" type="text" class="w-full p-4 text-center text-lg bg-gray-800/60 backdrop-blur-sm border-2 border-gray-500 rounded-lg 
-                focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400 placeholder-gray-400" placeholder="DIGITE SEU NÚMERO DE CELULAR">
-                
-              
+                <input id="cidadeInput" type="text" class="w-full p-4 mb-4 text-center text-lg bg-gray-800/60 backdrop-blur-sm border-2 border-gray-500 rounded-lg focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400 placeholder-gray-400" placeholder="DIGITE SUA CIDADE">
+                <input id="phoneInput" type="text" class="w-full p-4 text-center text-lg bg-gray-800/60 backdrop-blur-sm border-2 border-gray-500 rounded-lg focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400 placeholder-gray-400" placeholder="DIGITE SEU NÚMERO DE CELULAR">
                 <button id="submitButton" class="button">
-                    <span class="button_lg">
-                        <span class="button_sl"></span>
-                        <span class="button_text">Receber notificações ao vivo</span>
-                    </span>
+                    <span class="button_lg"> <span class="button_sl"></span> <span class="button_text">Analisar Clima Local</span> </span>
                 </button>
             </div>
-            
-                <div id="alertModal" class="modal-overlay">
-                    <div class="modal-content">
-                        <h2 class="modal-title"></h2>
-                        <p id="modalMessage" class="modal-message">
-                            Para receber os alertas, você precisa preencher todos os campos. Faltou colocar a visão aí!
-                        </p>
-                        <button id="closeModalBtn" class="modal-close-btn">Ok!</button>
-                    </div>
+            <div id="alertModal" class="modal-overlay">
+                <div class="modal-content">
+                    <h2 class="modal-title"></h2>
+                    <p id="modalMessage" class="modal-message"></p>
+                    <button id="closeModalBtn" class="modal-close-btn">Ok!</button>
                 </div>
+            </div>
         </section>
-    </div>
 
-
-
-        <main id="resilience-center" class="space-y-12">
+        <main id="resilience-center" class="space-y-12" style="display: none;">
             
-          
+            <section id="weather-info" class="main-card text-center"></section>
+            
             <section class="main-card">
-                <h2 class="section-title">🚨 Alertas</h2>
-                <div class="alert-box alert-yellow">
-                    <p class="font-bold">Onda de Calor Prevista!</p>
-                    <p>“Hoje a energia da sua região está com alta pegada de carbono. Prefira usar eletrodomésticos fora do horário de pico (das 18h às 21h).”</p>
-                </div>
-                <div class="alert-box alert-red mt-4">
-                    <p class="font-bold">Risco de Tempestade!</p>
-                    <p>“Alerta: Tempestade prevista para amanhã na sua região. Evite sair de casa e reduza deslocamentos motorizados para diminuir emissões.”</p>
-                </div>
-            </section>
-
-          
-            <section class="main-card">
-                <h2 class="section-title">📈 Histórico de Eventos Extremos (Últimos 7 dias)</h2>
-
-//!BASEADO NA API DO OPENWEATHERMAP
-
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                    <div class="history-item">
-                        <p class="history-value">8</p>
-                        <p class="history-label">Ondas de Calor</p>
-                    </div>
-                    <div class="history-item">
-                        <p class="history-value">12</p>
-                        <p class="history-label">Tempestades</p>
-                    </div>
-                    <div class="history-item">
-                        <p class="history-value">4</p>
-                        <p class="history-label">Riscos de Alagamento</p>
-                    </div>
-                    <div class="history-item">
-                        <p class="history-value">+25%</p>
-                        <p class="history-label">vs Média Histórica</p>
-                    </div>
-                </div>
+                <h2 class="section-title">🚨 Alertas Críticos e Recomendações</h2>
+                <div id="alerts-container"></div>
             </section>
 
             <section class="main-card">
-                <h2 class="section-title">🗺️ Mapa de Risco</h2>
-                <div id="map-container">
-                    <p>Aqui vai o mapa interativo mostrando as áreas afetadas.</p>
-                    // API MOSTRA
-                </div>
+                <h2 class="section-title">📅 Previsão para os Próximos Dias</h2>
+                <div id="forecast-container" class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center"></div>
+            </section>
+            
+            <section class="main-card">
+                <h2 class="section-title">📊 Histórico de Eventos Extremos (Salvos Localmente)</h2>
+                <div id="historico-container" class="grid grid-cols-2 md:grid-cols-3 gap-4 text-center"></div>
             </section>
 
             <section class="main-card">
@@ -108,24 +63,15 @@
                 </div>
             </section>
         </main>
-
-        
+    </div>
    
     <footer class="w-full py-8 mt-16 border-t border-gray-700/50">
         <div class="container mx-auto px-4 flex flex-col md:flex-row justify-center items-center gap-8">
-            <!-- Placeholder para Logo 1 -->
-            <div class="logo-placeholder">
-                <img src="/images/logo-uni.png">
-            </div>
-            <!-- Placeholder para Logo 2 -->
-            <div class="logo-placeholder">
-                <img src="images/hackaton.png" alt="">
-            </div>
+            <div class="logo-placeholder"> <img src="/images/logo-uni.png"> </div>
+            <div class="logo-placeholder"> <img src="images/hackaton.png" alt=""> </div>
         </div>
     </footer>
 
-
-    </div>
+    <script src="script.js"></script>
 </body>
 </html>
-<script src="script.js"></script>

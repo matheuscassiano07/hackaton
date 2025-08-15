@@ -10,6 +10,7 @@ body {
     background-attachment: fixed;
 }
 
+
 .btn-action {
     transition: all 0.3s ease;
 }
@@ -128,4 +129,20 @@ html {
 /* Efeito de hover para o gradiente ficar mais claro */
 ::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(to bottom, #a78bfa, #60a5fa);
+}
+
+
+/* ======================================================= */
+/* ESTILO SÓ PARA OS CELULARES (DISPOSITIVOS MÓVEIS)       */
+/* ======================================================= */
+/* ======================================================= */
+/* ESTILO SÓ PARA OS CELULARES (DISPOSITIVOS MÓVEIS)       */
+/* ======================================================= */
+
+@media (max-width: 768px) {
+body {
+background-image: url('/images/mobile-back.jpg');
+        /* Tira o 'fixed' pra não pesar no celular */
+background-attachment: scroll; 
+}
 }

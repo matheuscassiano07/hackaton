@@ -1,0 +1,131 @@
+/* ======================================================= */
+/* ESTILOS GERAIS                                          */
+/* ======================================================= */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-image: url('/images/background.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.btn-action {
+    transition: all 0.3s ease;
+}
+
+.btn-action:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* ======================================================= */
+/* ESTILOS DA CENTRAL DE RESILIÊNCIA                       */
+/* ======================================================= */
+
+/* Card principal para cada seção */
+.main-card {
+    background-color: rgba(17, 24, 39, 0.7); /* bg-gray-900/70 */
+    backdrop-filter: blur(8px);
+    border-radius: 1rem; /* rounded-2xl */
+    padding: 1.5rem; /* p-6 */
+    border: 1px solid rgba(55, 65, 81, 0.5); /* Borda sutil */
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.section-title {
+    font-size: 1.5rem; /* text-2xl */
+    font-weight: 700; /* font-bold */
+    margin-bottom: 1.5rem; /* mb-6 */
+    text-align: center;
+    color: #67e8f9; /* text-cyan-300 */
+}
+
+/* Caixa de Alerta Educativo */
+.alert-box {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border-left-width: 4px;
+}
+
+.alert-yellow {
+    background-color: rgba(252, 211, 77, 0.1);
+    border-color: #facc15; /* yellow-400 */
+    color: #fde68a; /* yellow-200 */
+}
+
+.alert-red {
+    background-color: rgba(248, 113, 113, 0.1);
+    border-color: #f87171; /* red-400 */
+    color: #fecaca; /* red-200 */
+}
+
+/* Itens do Histórico */
+.history-item {
+    background-color: rgba(55, 65, 81, 0.5); /* bg-gray-700/50 */
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+
+.history-value {
+    font-size: 2.25rem; /* text-4xl */
+    font-weight: 700;
+    color: #67e8f9; /* text-cyan-300 */
+}
+
+.history-label {
+    font-size: 0.875rem; /* text-sm */
+    color: #d1d5db; /* text-gray-300 */
+}
+
+/* Placeholder do Mapa */
+#map-container {
+    height: 400px;
+    background-color: rgba(55, 65, 81, 0.5);
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9ca3af; /* text-gray-400 */
+    border: 2px dashed #4b5563; /* border-gray-600 */
+}
+
+/* Caixa de Gamificação */
+.gamification-box {
+    background-color: rgba(55, 65, 81, 0.5);
+    padding: 2rem 1rem;
+    border-radius: 0.5rem;
+    text-align: center;
+}
+
+/* ======================================================= */
+/* ESTILO DO SCROLLBAR FLUTUANTE                           */
+/* ======================================================= */
+
+/* Para navegadores Firefox - A chave que faltava */
+html {
+    scrollbar-width: thin; /* Barra fina */
+    scrollbar-color: #8b5cf6 transparent; /* Cor da barra roxa e fundo transparente */
+}
+
+
+/* Para navegadores WebKit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+    width: 10px; /* Largura da barra, um pouco mais fina */
+}
+
+/* Deixa o fundo da barra transparente para o efeito flutuante */
+::-webkit-scrollbar-track {
+    background-color: #000;
+}
+
+/* Estiliza a barra de rolagem com o gradiente roxo azulado */
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #8b5cf6, #3b82f6); /* Gradiente de roxo para azul */
+    border-radius: 20px; /* Bordas arredondadas */
+}
+
+/* Efeito de hover para o gradiente ficar mais claro */
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, #a78bfa, #60a5fa);
+}

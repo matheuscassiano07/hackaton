@@ -1,4 +1,5 @@
 import { criarPreferenciaDePagamento } from './apis/payApi.js';
+
 document.addEventListener("DOMContentLoaded", () => {
     const submitButton = document.getElementById("submitButton");
     const cidadeInput = document.getElementById("cidadeInput");
@@ -27,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // Se a cidade não for encontrada, informa o usuário e para a execução
             if (geoJson.cod != 200) {
                 showModal(`Cidade não encontrada: "${cidade}". Por favor, verifique e tente novamente.`);
-                return false; // <-- MUDANÇA AQUI: Avisa que deu erro
+                return false;
             }
 
             const { lat, lon } = geoJson.coord;
@@ -51,12 +52,12 @@ document.addEventListener("DOMContentLoaded", () => {
             mostrarPrevisao(data.daily);
             gerarAlertaClimatico(data);
 
-            return true; // <-- MUDANÇA AQUI: Avisa que deu tudo certo
+            return true;
 
         } catch (error) {
             console.error("ERRO NA CHAMADA DA API:", error);
             showModal("Ocorreu um erro de conexão. Por favor, verifique sua internet.");
-            return false; // <-- MUDANÇA AQUI: Avisa que deu erro
+            return false;
         }
     }
 
@@ -84,17 +85,14 @@ document.addEventListener("DOMContentLoaded", () => {
         const nomeValue = nomeInput.value;
         const phoneValue = phoneInput.value;
 
-        if (!cidadeValue || !phoneValue || !nomeValue) {
+        if (!cidadeValue || !nomeValue || !phoneValue) {
             showModal("Por favor, preencha todos os campos.");
             return;
         }
         
-        // <-- MUDANÇA AQUI: Primeiro a gente valida, DEPOIS a gente salva
         const isCityValid = await fetchAndDisplayWeather(cidadeValue, nomeValue);
 
-        // Se a função de cima retornar 'true', aí sim a gente executa o resto
         if (isCityValid) {
-            // Salva os dados do usuário no dispositivo
             const userData = {
                 nome: nomeValue,
                 cidade: cidadeValue,
@@ -102,17 +100,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 pontos: 100 // Pontos iniciais por se cadastrar
             };
             localStorage.setItem('userData', JSON.stringify(userData));
-
-            // Atualiza o ranking com o novo usuário
             atualizarRanking();
-            
-            // Mostra a mensagem de sucesso SÓ NO FINAL
             showModal("Dados salvos com sucesso no seu dispositivo.");
         }
     });
     
-    // O restante do código permanece o mesmo...
-    
+    // Funções de exibição de informações (sem alterações)
     function mostrarInfos(data, cityName) {
         const container = document.getElementById("weather-info");
         container.innerHTML = `
@@ -150,12 +143,10 @@ document.addEventListener("DOMContentLoaded", () => {
     function mostrarAlertas(alerts) {
         const container = document.getElementById("alerts-container");
         container.innerHTML = "";
-
         if (!alerts || alerts.length === 0) {
         container.innerHTML = `<div class="alert-box alert-yellow"><p class="font-bold">Tudo certo!</p><p>Nenhum alerta meteorológico para sua região no momento.</p></div>`;
         return;
         }
-
         alerts.forEach((alert) => {
             const alertEl = document.createElement("div");
             alertEl.className = "alert-box alert-red mt-4";
@@ -171,12 +162,10 @@ document.addEventListener("DOMContentLoaded", () => {
     function mostrarPrevisao(dailyData) {
         const container = document.getElementById("forecast-container");
         container.innerHTML = "";
-
         dailyData.slice(1, 5).forEach((day) => {
             const weekDay = new Date(day.dt * 1000).toLocaleDateString("pt-BR", {
                 weekday: "short",
             });
-
             const dayEl = document.createElement("div");
             dayEl.className =
                 "history-item flex flex-col justify-between items-center";
@@ -206,70 +195,28 @@ document.addEventListener("DOMContentLoaded", () => {
         const weatherId = data.current.weather[0].id;
         const tempMax = data.daily[0].temp.max;
         const tempMin = data.daily[0].temp.min;
-
-        // Condição para CHUVAS INTENSAS ou TEMPESTADES (IDs 200-531)
         if (weatherId >= 200 && weatherId <= 531) {
-            message = `
-                <div class="alert-box alert-red mt-4">
-                    <p class="font-bold">🚨 ALERTA DE CHUVAS INTENSAS</p>
-                    <p class="mb-2"><strong>Contexto Climático:</strong> A intensificação de eventos climáticos, como chuvas fortes, é uma das consequências documentadas das mudanças climáticas globais, que alteram os padrões de precipitação.</p>
-                    <p><strong>Recomendação Sustentável:</strong> Verifique a limpeza de calhas e bueiros para garantir o escoamento adequado da água. Mantenha-se atento a áreas com risco de alagamento e, se possível, evite deslocamentos desnecessários.</p>
-                </div>
-            `;
+            message = `<div class="alert-box alert-red mt-4"><p class="font-bold">🚨 ALERTA DE CHUVAS INTENSAS</p><p class="mb-2"><strong>Contexto Climático:</strong> A intensificação de eventos climáticos, como chuvas fortes, é uma das consequências documentadas das mudanças climáticas globais, que alteram os padrões de precipitação.</p><p><strong>Recomendação Sustentável:</strong> Verifique a limpeza de calhas e bueiros para garantir o escoamento adequado da água. Mantenha-se atento a áreas com risco de alagamento e, se possível, evite deslocamentos desnecessários.</p></div>`;
         } 
-        // Condição para ONDA DE CALOR (Temp. > 30°C)
         else if (tempMax > 30) {
-            message = `
-                <div class="alert-box alert-yellow mt-4">
-                    <p class="font-bold">🔥 ALERTA DE ONDA DE CALOR</p>
-                    <p class="mb-2"><strong>Contexto Climático:</strong> Ondas de calor mais frequentes e intensas são um claro indicativo do aquecimento global. A emissão de gases de efeito estufa potencializa a retenção de calor na atmosfera.</p>
-                    <p><strong>Recomendação Sustentável:</strong> Hidrate-se constantemente e priorize o uso consciente de energia, especialmente de equipamentos como ar-condicionado. Desconectar aparelhos da tomada contribui para a redução do consumo.</p>
-                </div>
-            `;
+            message = `<div class="alert-box alert-yellow mt-4"><p class="font-bold">🔥 ALERTA DE ONDA DE CALOR</p><p class="mb-2"><strong>Contexto Climático:</strong> Ondas de calor mais frequentes e intensas são um claro indicativo do aquecimento global. A emissão de gases de efeito estufa potencializa a retenção de calor na atmosfera.</p><p><strong>Recomendação Sustentável:</strong> Hidrate-se constantemente e priorize o uso consciente de energia, especialmente de equipamentos como ar-condicionado. Desconectar aparelhos da tomada contribui para a redução do consumo.</p></div>`;
         }
-        // Condição para DIA ENSOLARADO (ID 800 - Céu Limpo)
         else if (weatherId === 800) {
-            message = `
-                <div class="alert-box alert-green mt-4">
-                    <p class="font-bold">☀️ DIA ENSOLARADO</p>
-                    <p class="mb-2"><strong>Contexto Climático:</strong> Dias ensolarados representam uma oportunidade para refletir sobre o potencial de fontes de energia renovável, como a solar, que é fundamental na transição para uma matriz energética mais limpa.</p>
-                    <p><strong>Recomendação Sustentável:</strong> Aproveite a iluminação natural para reduzir o consumo de eletricidade. Considere utilizar meios de transporte de baixa emissão de carbono, como bicicletas ou caminhadas.</p>
-                </div>
-            `;
+            message = `<div class="alert-box alert-green mt-4"><p class="font-bold">☀️ DIA ENSOLARADO</p><p class="mb-2"><strong>Contexto Climático:</strong> Dias ensolarados representam uma oportunidade para refletir sobre o potencial de fontes de energia renovável, como a solar, que é fundamental na transição para uma matriz energética mais limpa.</p><p><strong>Recomendação Sustentável:</strong> Aproveite a iluminação natural para reduzir o consumo de eletricidade. Considere utilizar meios de transporte de baixa emissão de carbono, como bicicletas ou caminhadas.</p></div>`;
         }
-        // Condição para QUEDA DE TEMPERATURA (Temp. < 15°C)
         else if (tempMin < 15) {
-            message = `
-                <div class="alert-box alert-blue mt-4">
-                    <p class="font-bold">❄️ QUEDA ACENTUADA DE TEMPERATURA</p>
-                    <p class="mb-2"><strong>Contexto Climático:</strong> As alterações climáticas podem influenciar a intensidade e a frequência de eventos de temperatura extrema. Ações de mitigação são essenciais para estabilizar esses padrões.</p>
-                    <p><strong>Recomendação Sustentável:</strong> Para manter o conforto térmico, opte por um bom agasalho e pela vedação de frestas em portas e janelas antes de recorrer a aquecedores elétricos, que possuem alto consumo energético.</p>
-                </div>
-            `;
+            message = `<div class="alert-box alert-blue mt-4"><p class="font-bold">❄️ QUEDA ACENTUADA DE TEMPERATURA</p><p class="mb-2"><strong>Contexto Climático:</strong> As alterações climáticas podem influenciar a intensidade e a frequência de eventos de temperatura extrema. Ações de mitigação são essenciais para estabilizar esses padrões.</p><p><strong>Recomendação Sustentável:</strong> Para manter o conforto térmico, opte por um bom agasalho e pela vedação de frestas em portas e janelas antes de recorrer a aquecedores elétricos, que possuem alto consumo energético.</p></div>`;
         }
-        // Condição para DIA NUBLADO (IDs 801-804)
         else if (weatherId >= 801 && weatherId <= 804) {
-            message = `
-                <div class="alert-box alert-gray mt-4">
-                    <p class="font-bold">☁️ DIA PREDOMINANTEMENTE NUBLADO</p>
-                    <p class="mb-2"><strong>Contexto Climático:</strong> Nossas atividades diárias contribuem para a pegada de carbono global. O consumo consciente é uma ferramenta poderosa para a mitigação dos impactos climáticos, independentemente do tempo.</p>
-                    <p><strong>Recomendação Sustentável:</strong> Adote práticas como a separação de resíduos para reciclagem. A gestão adequada do lixo reduz a emissão de gases de efeito estufa, como o metano, gerado em aterros sanitários.</p>
-                </div>
-            `;
+            message = `<div class="alert-box alert-gray mt-4"><p class="font-bold">☁️ DIA PREDOMINANTEMENTE NUBLADO</p><p class="mb-2"><strong>Contexto Climático:</strong> Nossas atividades diárias contribuem para a pegada de carbono global. O consumo consciente é uma ferramenta poderosa para a mitigação dos impactos climáticos, independentemente do tempo.</p><p><strong>Recomendação Sustentável:</strong> Adote práticas como a separação de resíduos para reciclagem. A gestão adequada do lixo reduz a emissão de gases de efeito estufa, como o metano, gerado em aterros sanitários.</p></div>`;
         }
-        
         if(message) {
             container.innerHTML += message;
         }
     }
 
-    // --- INÍCIO DO CÓDIGO DE GAMIFICAÇÃO ---
-
-    // Pega o botão de doação pelo novo ID
+    // --- CÓDIGO DE GAMIFICAÇÃO ---
     const donateButton = document.getElementById("donateButton");
-
-    // 1. DADOS FAKES + DADOS LOCAIS
-    // Vamos criar uma lista de usuários fakes para o ranking não começar vazio
     let rankingData = [
         { nome: "Mariana S.", pontos: 1850 },
         { nome: "Carlos E.", pontos: 1700 },
@@ -278,73 +225,75 @@ document.addEventListener("DOMContentLoaded", () => {
         { nome: "Ana L.", pontos: 1300 }
     ];
 
-    // Função para ATUALIZAR O RANKING na tela
     function atualizarRanking() {
         const rankingBody = document.getElementById("ranking-body");
-        
-        // Pega os dados do usuário atual salvos no localStorage, se existirem
         const savedUserData = localStorage.getItem('userData');
         if (savedUserData) {
             const currentUser = JSON.parse(savedUserData);
-            
-            // Verifica se o usuário atual já está na lista do ranking
             const userIndex = rankingData.findIndex(user => user.nome === currentUser.nome);
-            
             if (userIndex !== -1) {
-                // Se já existe, atualiza os pontos
                 rankingData[userIndex].pontos = currentUser.pontos || 0;
             } else {
-                // Se não existe, adiciona ele
                 rankingData.push({ nome: currentUser.nome, pontos: currentUser.pontos || 0 });
             }
         }
-        
-        // Ordena o ranking pelos pontos (do maior para o menor)
         rankingData.sort((a, b) => b.pontos - a.pontos);
-        
-        // Limpa a tabela antes de adicionar os novos dados
         rankingBody.innerHTML = "";
-        
-        // Cria as linhas da tabela para cada usuário
         rankingData.forEach((user, index) => {
             const tr = document.createElement("tr");
             tr.className = "border-b border-gray-700/50 hover:bg-gray-700/50 transition-colors";
-            
             tr.innerHTML = `
                 <td class="p-3 font-bold text-cyan-400">${index + 1}º</td>
                 <td class="p-3">${user.nome}</td>
                 <td class="p-3 text-right font-bold">${user.pontos}</td>
             `;
-            
             rankingBody.appendChild(tr);
         });
     }
 
-    // 2. LÓGICA DE PONTUAÇÃO
-    // Evento de clique no botão de doação
-    donateButton.addEventListener("click", () => {
+    // ===================================================================
+    // AQUI ESTÁ A ÚNICA MUDANÇA: A LÓGICA CORRETA DO BOTÃO DE DOAÇÃO
+    // ===================================================================
+    donateButton.addEventListener("click", async () => {
         const savedUserData = localStorage.getItem('userData');
-        if (savedUserData) {
-            let currentUser = JSON.parse(savedUserData);
-            
-            // Adiciona 150 pontos (ou o valor que você quiser) por clicar para doar
-            currentUser.pontos = (currentUser.pontos || 0) + 150;
-            
-            // Salva os dados atualizados com os novos pontos
+        if (!savedUserData) {
+            showModal("Você precisa se cadastrar na plataforma para doar. Preencha seus dados no topo da página!");
+            return;
+        }
+
+        const currentUser = JSON.parse(savedUserData);
+        const valorDoacao = prompt("Para fins de gamificação, digite o valor que você deseja doar (ex: 10.50):");
+
+        if (!valorDoacao || isNaN(Number(valorDoacao)) || Number(valorDoacao) <= 0) {
+            showModal("Valor inválido. Por favor, insira um número maior que zero.");
+            return;
+        }
+
+        showModal("Aguarde, estamos gerando seu link de pagamento seguro...");
+        console.log("Chamando a API do Mercado Pago...");
+
+        const linkDePagamento = await criarPreferenciaDePagamento(currentUser.nome, valorDoacao);
+        
+        console.log("Link recebido da API:", linkDePagamento);
+
+        if (linkDePagamento) {
+            currentUser.pontos = (currentUser.pontos || 0) + (Number(valorDoacao) * 10); // R$1 = 10 pontos
             localStorage.setItem('userData', JSON.stringify(currentUser));
-            
-            // Mostra um modal avisando dos pontos
-            showModal(`${currentUser.nome}, você ganhou 150 pontos por apoiar a causa! Obrigado!`);
-            
-            // Atualiza o ranking na tela
             atualizarRanking();
+            
+            showModal("Link gerado! Você será redirecionado.");
+            window.open(linkDePagamento, '_blank'); // Abre em nova aba
+            
+            setTimeout(() => {
+                hideModal();
+            }, 1500);
+
         } else {
-            // Se o usuário não estiver logado, avisa pra ele se cadastrar primeiro
-            showModal("Você precisa se cadastrar na plataforma para ganhar pontos. Preencha seus dados no topo da página!");
+            showModal("Não foi possível criar o link de pagamento. Verifique o console (F12) para mais detalhes do erro.");
         }
     });
 
-    // --- FIM DO CÓDIGO DE GAMIFICAÇÃO ---
+    // Eventos do modal (sem alterações)
     closeModalBtn.addEventListener("click", hideModal);
     alertModal.addEventListener("click", (event) => {
         if (event.target === alertModal) {

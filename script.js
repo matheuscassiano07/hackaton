@@ -189,34 +189,69 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  function gerarAlertaClimatico(data) {
-      const container = document.getElementById('alerts-container');
-      let message = '';
-      const weatherId = data.current.weather[0].id;
-      const tempMax = data.daily[0].temp.max;
+function gerarAlertaClimatico(data) {
+    const container = document.getElementById('alerts-container');
+    let message = '';
+    const weatherId = data.current.weather[0].id;
+    const tempMax = data.daily[0].temp.max;
+    const tempMin = data.daily[0].temp.min;
 
-      if (weatherId >= 200 && weatherId <= 531) {
-          message = `
-              <div class="alert-box alert-yellow mt-4">
-                  <p class="font-bold">Alerta Climático e Educativo</p>
-                  <p>Alerta de chuva forte! ⛈ Tenha atenção com áreas de alagamento e verifique a limpeza das calhas. Eventos climáticos extremos como este estão se tornando mais frequentes devido às mudanças climáticas. Mantenha-se seguro.</p>
-              </div>
-          `;
-      }
-      else if (tempMax > 30) {
-          message = `
-              <div class="alert-box alert-yellow mt-4">
-                  <p class="font-bold">Alerta Climático e Educativo</p>
-                  <p>Alerta de onda de calor! 🔥 Considere economizar água e energia. Eventos climáticos extremos como este estão se tornando mais frequentes devido às mudanças climáticas. Mantenha-se seguro.</p>
-              </div>
-          `;
-      }
+    // Condição para CHUVAS INTENSAS ou TEMPESTADES (IDs 200-531)
+    if (weatherId >= 200 && weatherId <= 531) {
+        message = `
+            <div class="alert-box alert-red mt-4">
+                <p class="font-bold">🚨 ALERTA DE CHUVAS INTENSAS</p>
+                <p class="mb-2"><strong>Contexto Climático:</strong> A intensificação de eventos climáticos, como chuvas fortes, é uma das consequências documentadas das mudanças climáticas globais, que alteram os padrões de precipitação.</p>
+                <p><strong>Recomendação Sustentável:</strong> Verifique a limpeza de calhas e bueiros para garantir o escoamento adequado da água. Mantenha-se atento a áreas com risco de alagamento e, se possível, evite deslocamentos desnecessários.</p>
+            </div>
+        `;
+    } 
+    // Condição para ONDA DE CALOR (Temp. > 30°C)
+    else if (tempMax > 30) {
+        message = `
+            <div class="alert-box alert-yellow mt-4">
+                <p class="font-bold">🔥 ALERTA DE ONDA DE CALOR</p>
+                <p class="mb-2"><strong>Contexto Climático:</strong> Ondas de calor mais frequentes e intensas são um claro indicativo do aquecimento global. A emissão de gases de efeito estufa potencializa a retenção de calor na atmosfera.</p>
+                <p><strong>Recomendação Sustentável:</strong> Hidrate-se constantemente e priorize o uso consciente de energia, especialmente de equipamentos como ar-condicionado. Desconectar aparelhos da tomada contribui para a redução do consumo.</p>
+            </div>
+        `;
+    }
+    // Condição para DIA ENSOLARADO (ID 800 - Céu Limpo)
+    else if (weatherId === 800) {
+        message = `
+            <div class="alert-box alert-green mt-4">
+                <p class="font-bold">☀️ DIA ENSOLARADO</p>
+                <p class="mb-2"><strong>Contexto Climático:</strong> Dias ensolarados representam uma oportunidade para refletir sobre o potencial de fontes de energia renovável, como a solar, que é fundamental na transição para uma matriz energética mais limpa.</p>
+                <p><strong>Recomendação Sustentável:</strong> Aproveite a iluminação natural para reduzir o consumo de eletricidade. Considere utilizar meios de transporte de baixa emissão de carbono, como bicicletas ou caminhadas.</p>
+            </div>
+        `;
+    }
+    // Condição para QUEDA DE TEMPERATURA (Temp. < 15°C)
+    else if (tempMin < 15) {
+        message = `
+            <div class="alert-box alert-blue mt-4">
+                <p class="font-bold">❄️ QUEDA ACENTUADA DE TEMPERATURA</p>
+                <p class="mb-2"><strong>Contexto Climático:</strong> As alterações climáticas podem influenciar a intensidade e a frequência de eventos de temperatura extrema. Ações de mitigação são essenciais para estabilizar esses padrões.</p>
+                <p><strong>Recomendação Sustentável:</strong> Para manter o conforto térmico, opte por um bom agasalho e pela vedação de frestas em portas e janelas antes de recorrer a aquecedores elétricos, que possuem alto consumo energético.</p>
+            </div>
+        `;
+    }
+    // Condição para DIA NUBLADO (IDs 801-804)
+    else if (weatherId >= 801 && weatherId <= 804) {
+        message = `
+            <div class="alert-box alert-gray mt-4">
+                <p class="font-bold">☁️ DIA PREDOMINANTEMENTE NUBLADO</p>
+                <p class="mb-2"><strong>Contexto Climático:</strong> Nossas atividades diárias contribuem para a pegada de carbono global. O consumo consciente é uma ferramenta poderosa para a mitigação dos impactos climáticos, independentemente do tempo.</p>
+                <p><strong>Recomendação Sustentável:</strong> Adote práticas como a separação de resíduos para reciclagem. A gestão adequada do lixo reduz a emissão de gases de efeito estufa, como o metano, gerado em aterros sanitários.</p>
+            </div>
+        `;
+    }
 
-      if(message) {
-        container.innerHTML += message;
-      }
-  }
-
+  
+    if(message) {
+      container.innerHTML += message;
+    }
+ }
   closeModalBtn.addEventListener("click", hideModal);
   alertModal.addEventListener("click", (event) => {
     if (event.target === alertModal) {

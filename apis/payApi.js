@@ -1,9 +1,5 @@
-export { criarPreferenciaDePagamento };
-
-// Arquivo: mercado-pago.js
-
 async function criarPreferenciaDePagamento(nome, valor) {
-    const accessToken = 'SEU_ACCESS_TOKEN_DE_TESTE_AQUI'; 
+    const accessToken = 'TEST-2456748988229588-081715-7aea15cc7e6ff7bd0f1cefb6710cf3f8-207454068'; 
 
     const url = 'https://api.mercadopago.com/checkout/preferences';
 

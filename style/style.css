@@ -16,7 +16,7 @@ body {
     background-color: rgba(17, 24, 39, 0.7); /* bg-gray-900/70 */
     backdrop-filter: blur(8px);
     border-radius: 1rem; /* rounded-2xl */
-    padding: 1.5rem; /* p-6 */
+    padding: 3.5rem; /* p-6 */
     border: 1px solid rgba(55, 65, 81, 0.5); /* Borda sutil */
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 }

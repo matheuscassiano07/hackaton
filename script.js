@@ -1,3 +1,4 @@
+import { criarPreferenciaDePagamento } from './apis/payApi.js';
 document.addEventListener("DOMContentLoaded", () => {
     const submitButton = document.getElementById("submitButton");
     const cidadeInput = document.getElementById("cidadeInput");

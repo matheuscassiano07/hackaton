@@ -1,6 +1,7 @@
 import { criarPreferenciaDePagamento } from './apis/payApi.js';
 
 document.addEventListener("DOMContentLoaded", () => {
+    // --- VARIÁVEIS E ELEMENTOS ---
     const submitButton = document.getElementById("submitButton");
     const cidadeInput = document.getElementById("cidadeInput");
     const nomeInput = document.getElementById("nomeInput");
@@ -9,15 +10,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const closeModalBtn = document.getElementById("closeModalBtn");
     const modalMessage = document.getElementById("modalMessage");
     const resilienceCenter = document.getElementById("resilience-center");
-    const radarSection = document.getElementById("radar"); // Pega a seção do formulário
+    const radarSection = document.getElementById("radar");
     const apiKey = "7a2791ab1c9e89014a098d47a489fb53";
 
-    // Cria o espaço para a mensagem de boas-vindas
     const welcomeMessageContainer = document.createElement('div');
     welcomeMessageContainer.id = 'welcome-message';
     resilienceCenter.insertBefore(welcomeMessageContainer, resilienceCenter.firstChild);
 
-    // Função única para buscar o clima e exibir as informações
+    // --- FUNÇÕES DE LÓGICA PRINCIPAL ---
+
     async function fetchAndDisplayWeather(cidade, nome) {
         try {
             const geoApiURL = `https://api.openweathermap.org/data/2.5/weather?q=${cidade}&appid=${apiKey}&lang=pt_br`;
@@ -47,23 +48,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Verifica se o usuário já possui dados salvos
-    const savedUserData = localStorage.getItem('userData');
-    if (savedUserData) {
-        const userData = JSON.parse(savedUserData);
-        fetchAndDisplayWeather(userData.cidade, userData.nome);
-    }
-
-    function showModal(message) {
-        modalMessage.textContent = message;
-        alertModal.classList.add("visible");
-    }
-
-    function hideModal() {
-        alertModal.classList.remove("visible");
-    }
-
-    // Evento de clique para novos usuários
     submitButton.addEventListener("click", async (event) => {
         event.preventDefault();
         const cidadeValue = cidadeInput.value;
@@ -87,9 +71,20 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    // --- FUNÇÕES DE EXIBIÇÃO ---
+
+    function showModal(message) {
+        modalMessage.textContent = message;
+        alertModal.classList.add("visible");
+    }
+
+    function hideModal() {
+        alertModal.classList.remove("visible");
+    }
+
     function mostrarInfos(data, cityName) {
         const container = document.getElementById("weather-info");
-        container.innerHTML = `<h2 class="text-3xl font-bold mb-4 text-cyan-300">Tempo agora em ${cityName}</h2><div class="flex flex-col md:flex-row items-center justify-center gap-4 mb-4"><img src="https://openweathermap.org/img/wn/${data.current.weather[0].icon}@4x.png" alt="Ícone do Tempo" class="w-32 h-32 -my-4"><div class="text-left"><p class="text-7xl font-black">${data.current.temp.toFixed(0)}°C</p><p class="text-xl capitalize -mt-2">${data.current.weather[0].description}</p></div></div><div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center mt-8"><div class="history-item"><p class="history-value">${data.current.feels_like.toFixed(0)}°</p><p class="history-label">Sensação</p></div><div class="history-item"><p class="history-value">${data.current.humidity}%</p><p class="history-label">Umidade</p></div><div class="history-item"><p class="history-value">${(data.current.wind_speed*3.6).toFixed(1)} km/h</p><p class="history-label">Vento</p></div><div class="history-item"><p class="history-value">${data.daily[0].temp.max.toFixed(0)}°</p><p class="history-label">Temp. Máx</p></div></div>`;
+        container.innerHTML = `<h2 class="text-3xl font-bold mb-4 text-cyan-300">Tempo agora em ${cityName}</h2><div class="flex flex-col md-flex-row items-center justify-center gap-4 mb-4"><img src="https://openweathermap.org/img/wn/${data.current.weather[0].icon}@4x.png" alt="Ícone do Tempo" class="w-32 h-32 -my-4"><div class="text-left"><p class="text-7xl font-black">${data.current.temp.toFixed(0)}°C</p><p class="text-xl capitalize -mt-2">${data.current.weather[0].description}</p></div></div><div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center mt-8"><div class="history-item"><p class="history-value">${data.current.feels_like.toFixed(0)}°</p><p class="history-label">Sensação</p></div><div class="history-item"><p class="history-value">${data.current.humidity}%</p><p class="history-label">Umidade</p></div><div class="history-item"><p class="history-value">${(data.current.wind_speed*3.6).toFixed(1)} km/h</p><p class="history-label">Vento</p></div><div class="history-item"><p class="history-value">${data.daily[0].temp.max.toFixed(0)}°</p><p class="history-label">Temp. Máx</p></div></div>`;
     }
 
     function mostrarAlertas(alerts) {
@@ -141,11 +136,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    // --- LÓGICA DE GAMIFICAÇÃO ---
     const donateButton = document.getElementById("donateButton");
     let rankingData = [{ nome: "Mariana S.", pontos: 1850 }, { nome: "Carlos E.", pontos: 1700 }, { nome: "Juliana P.", pontos: 1680 }, { nome: "Ricardo A.", pontos: 1520 }, { nome: "Ana L.", pontos: 1300 }];
 
     function atualizarRanking() {
         const rankingBody = document.getElementById("ranking-body");
+        const placarEl = document.getElementById("pontos-usuario");
         const savedUserData = localStorage.getItem('userData');
         if (savedUserData) {
             const currentUser = JSON.parse(savedUserData);
@@ -155,15 +152,22 @@ document.addEventListener("DOMContentLoaded", () => {
             } else {
                 rankingData.push({ nome: currentUser.nome, pontos: currentUser.pontos || 0 });
             }
+            if (placarEl) {
+                placarEl.textContent = currentUser.pontos || 0;
+            }
+        } else if (placarEl) {
+            placarEl.textContent = 0;
         }
         rankingData.sort((a, b) => b.pontos - a.pontos);
-        rankingBody.innerHTML = "";
-        rankingData.forEach((user, index) => {
-            const tr = document.createElement("tr");
-            tr.className = "border-b border-gray-700/50 hover:bg-gray-700/50 transition-colors";
-            tr.innerHTML = `<td class="p-3 font-bold text-cyan-400">${index + 1}º</td><td class="p-3">${user.nome}</td><td class="p-3 text-right font-bold">${user.pontos}</td>`;
-            rankingBody.appendChild(tr);
-        });
+        if(rankingBody) {
+            rankingBody.innerHTML = "";
+            rankingData.forEach((user, index) => {
+                const tr = document.createElement("tr");
+                tr.className = "border-b border-gray-700/50 hover:bg-gray-700/50 transition-colors";
+                tr.innerHTML = `<td class="p-3 font-bold text-cyan-400">${index + 1}º</td><td class="p-3">${user.nome}</td><td class="p-3 text-right font-bold">${user.pontos}</td>`;
+                rankingBody.appendChild(tr);
+            });
+        }
     }
 
     donateButton.addEventListener("click", async (event) => {
@@ -175,31 +179,21 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         const currentUser = JSON.parse(savedUserData);
         const valorDoacao = prompt("Para fins de gamificação, digite o valor que você deseja doar (ex: 10,50):");
-        
-        if (valorDoacao === null) {
-            return; 
-        }
-
+        if (valorDoacao === null) return;
         const valorCorrigido = valorDoacao.replace(",", ".");
-
         if (!valorCorrigido || isNaN(Number(valorCorrigido)) || Number(valorCorrigido) <= 0) {
             showModal("Valor inválido. Por favor, insira um número maior que zero.");
             return;
         }
-
         showModal("Aguarde, estamos gerando seu link de pagamento seguro...");
-        
         const linkDePagamento = await criarPreferenciaDePagamento(currentUser.nome, valorCorrigido);
-        
         if (linkDePagamento) {
             currentUser.pontos = (currentUser.pontos || 0) + (Number(valorCorrigido) * 10);
             localStorage.setItem('userData', JSON.stringify(currentUser));
             atualizarRanking();
             showModal("Link gerado! Você será redirecionado.");
             window.open(linkDePagamento, '_blank');
-            setTimeout(() => {
-                hideModal();
-            }, 1500);
+            setTimeout(() => { hideModal(); }, 1500);
         } else {
             showModal("Não foi possível criar o link de pagamento. Verifique o console (F12) para mais detalhes do erro.");
         }
@@ -212,5 +206,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    // --- INICIALIZAÇÃO DA PÁGINA ---
     atualizarRanking();
+    if (savedUserData) {
+        const userData = JSON.parse(savedUserData);
+        fetchAndDisplayWeather(userData.cidade, userData.nome);
+    }
 });
